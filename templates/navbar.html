@@ -1,0 +1,76 @@
+<nav>
+    <div class="container">
+        <div class="left">
+            <div class="logo">
+                <a href="/" class="logo">OpenBook</a>
+            </div>
+            <span id='search-icon' class="material-symbols-outlined">
+                search
+            </span>
+            <span id='close-search' class="material-symbols-outlined">
+                close_small
+            </span>
+        </div>
+
+        <div class="middle">
+            <div class="post-icon">
+                <a href="{% url 'home' %}" class='activate'>
+                    <span class="material-symbols-outlined">home</span>
+                </a>
+            </div>
+            <div class="friend-icon">
+                <a href="{% url 'users' %}" class='group'>
+                    <span class="material-symbols-outlined">group</span>
+                </a>
+            </div>
+            <div class="message-icon">
+                <a href="{% url 'chat_view' %}" class='message-user'>
+                    <span class="material-symbols-outlined">
+                        mail
+                    </span>
+                </a>
+            </div>
+            <div class="notification-icon">
+                <a href="">
+                    <span class="material-symbols-outlined">
+                        notifications
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="profile-icon">
+                <button>
+                    <span class="material-symbols-outlined">
+                        person
+                    </span>
+                </button>
+                <ul class="dropdown">
+                    <li>
+                        <a href="{% url 'profile' %}" id='mini-profile'>
+                            <div class="image">
+                                <img src="{{request.user.profile.avatar.url}}" alt="">
+                            </div>
+                            <div class="name">
+                                {% if request.user.profile.name %}
+                                    {{request.user.profile.name}}
+                                {% else %}
+                                    {{request.user.username}}
+                                {% endif %}
+                            </div>
+                        </a>
+                    </li>
+                    <li><a href="{% url 'settings' request.user.pk %}">Settings</a></li>
+                    <li><a href="">Dark mode</a></li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Logout" id='logout'>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

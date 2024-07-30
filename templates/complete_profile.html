@@ -1,0 +1,12 @@
+{% extends "base/layout.html" %}
+
+{% block content %}
+{% load static %}
+<div class="complete-profile">
+    <form action="{% url 'complete_profile' %}" enctype="multipart/form-data" id="profile-form" method='post'>
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Complete Your Profile">
+    </form>
+</div>
+{% endblock content %}

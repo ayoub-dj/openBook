@@ -1,0 +1,15 @@
+{% extends "base/layout.html" %}
+
+{% block content %}
+{% load static %}
+{% include "navbar.html" %}
+<main>
+    <div class="container">
+        {% include "topics.html" %}
+
+        {% include "posts.html" %}
+
+        {% include "activities.html" %}
+    </div>
+</main>
+{% endblock content %}

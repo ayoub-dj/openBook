@@ -1,0 +1,427 @@
+{% load static %}
+<div class="posts">
+    <div class="create-post">
+        <div class="field">
+            <div class="image">
+                <img src="static\imgs\default_profile.png" alt="">
+            </div>
+            <button class='open-create-post'>what's on your mind {{request.user}}</button>
+        </div>
+        <div class="create-post-icons">
+            <div id='new-post'>
+
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+                <span>New</span>
+            </div>
+            <div class='add_photo_alternate'>
+                <label for="imageInput" class="icon">
+                    <span style='cursor: pointer;' id='add_photo' class="material-symbols-outlined">add_photo_alternate</span>
+                </label>
+                <input type="file" id="imageInput" name='add_photo' class="hidden-input">           
+                <span>Image/video</span>
+            </div>
+            <div>
+                <span class="material-symbols-outlined">
+                    sentiment_satisfied
+                </span>
+                Feeling/Activity
+            </div>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <div class="col">
+            <div class="title">
+                <p></p>
+                <h3>Create post</h3>
+                <span class='close'>
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </span>
+            </div>
+            <div class="profile">
+                <div class="image">
+                    <img src="{{request.user.profile.avatar.url}}" alt="">
+                </div>
+                <div class="name">
+                    {% if request.user.porfile.name %}
+                    {{request.user.porfile.name}}
+                    {% else %}
+                    {{request.user.username}}
+                    {% endif %}
+                    <div class="chosen-location">
+                    </div>
+                </div>
+            </div>
+            <form action="{% url 'home' %}" method='POST' enctype="multipart/form-data" class='create-post-form'>
+                {% csrf_token %}
+                <textarea name="content" id="content" placeholder="what's on your mind {{ request.user }}"></textarea>
+                <input type="text" required name="topic" placeholder="Add a topic name" id="">
+                <div class="create-post-form-icons">
+                    <div class="text">
+                        add your post
+                    </div>
+    
+                    <div class='icons'>
+                        <div>
+                            <span id='location' class="material-symbols-outlined">
+                                location_on
+                            </span>
+                        </div>
+                        <div>
+                            <span style='cursor: pointer;' id='add_photo' class="material-symbols-outlined">add_photo_alternate</span>
+                            <input type="file" name="add_photo" style="display: none;">
+                        </div>
+                        <div>
+                            <span id='sentiment_satisfied' class="material-symbols-outlined">
+                                sentiment_satisfied
+                            </span>
+                        </div>
+                        <div>
+                            <span id='groups' class="material-symbols-outlined">
+                                groups
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" value='Post'>
+            </form>
+        </div>
+        <div class="col">
+            <div class="title">
+                <span class='close'>
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </span>
+                <h3>Search for location</h3>
+                <p></p>
+            </div>
+            <ul class="feelings">
+                <li class="feeling">
+                    <span class="material-symbols-outlined">
+                        sentiment_satisfied
+                        </span>
+                    <span>Happy</span>
+                </li>
+                <li class="feeling">
+                    <span class="material-symbols-outlined">
+                        sentiment_dissatisfied
+                        </span>
+                    <span>Sad</span>
+                </li>
+                <li class="feeling">
+                    <span class="material-symbols-outlined">
+                        hdr_strong
+                        </span>
+                    <span>Strong</span>
+                </li>
+                <li class="feeling">
+                    <span class="material-symbols-outlined">
+                        folded_hands
+                        </span>
+                    <span>Thankful</span>
+                </li>
+                <li class="feeling">
+                    <span class="material-symbols-outlined">
+                        volunteer_activism
+                        </span>
+                    <span>Loved</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col">
+            <div class="title">
+                <span class='close'>
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </span>
+                <h3>Search for location</h3>
+                <p></p>
+            </div>
+            <div>
+                <input type="search" placeholder="Search for your country" id="">
+            </div>
+            <div class="locations">
+                <li class="location">
+                    <span id="location" class="material-symbols-outlined">
+                        location_on
+                    </span>
+                    <span>
+                        Italy
+                    </span>
+                </li>
+                <li class="location">
+                    <span id="location" class="material-symbols-outlined">
+                        location_on
+                    </span>
+                    <span>
+                        France
+                    </span>
+                </li>
+                <li class="location">
+                    <span id="location" class="material-symbols-outlined">
+                        location_on
+                    </span>
+                    <span>
+                        Spain
+                    </span>
+                </li>
+            </div>
+        </div>
+    </div>
+
+    <div class="posts-list">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post-list">
+                    <div class="col">
+                        <div class="field">
+                            <div class="image">
+                                <img src="{{post.user.profile.avatar.url}}" alt="">
+                            </div>
+                            <div class="text">
+                                <div class="one">
+                                    <div class="name">
+                                        {% if post.user.profile.name %}
+                                        {{post.user.profile.name}}
+                                        {% else %}
+                                        {{post.user.username}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="feeling">is feeling blessed</div>
+                                </div>
+                                <div class="time">{{post.created_at|timesince}}</div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="edit-dropdown hide-to-middle">
+                                <form action="{% url 'edit-post' post.pk %}" method='POST' enctype="multipart/form-data" class='create-post-form'>
+                                    {% csrf_token %}
+                                    <textarea name="content" id="content" placeholder="what's on your mind {{ request.user }}">{{post.text}}'</textarea>
+                                    <input type="text" value='{{post.topic.name}}' required name="topic" placeholder="Add a topic name" id="">
+                                    <div class="create-post-form-icons">
+                                        <div class='icons'>
+                                            <div>
+                                                <span style='cursor: pointer;' id='add_photo' class="material-symbols-outlined">add_photo_alternate</span>
+                                                <input type="file" value='{{post.image}}' name="add_photo" style="display: none;">
+                                            </div>
+                                            <div>
+                                                <input type="checkbox" name="clearImage" id="clear-image">
+                                                <p>Clear Image</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a href="{% url 'home' %}">Cancel</a>
+                                        <input type="submit" value='Update'>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="delete-dropdown hide-to-top">
+                                <h3>Are you sure you want to delete it</h3>
+                                <p>
+                                    This post will delete permanently after clicking yes
+                                </p>
+                                <form action="{% url 'delete-post' post.pk %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Yes I am sure">
+                                    <a href="{% url 'home' %}">Cancel</a>
+                                </form>
+                            </div>
+                            <span id='more-button' class="material-symbols-outlined">
+                                more_vert
+                            </span>
+                            <div class="post-settings none">
+                                <ul class="settings">
+                                    {% if request.user == post.user %}
+                                    <form id='share-post-button' action="{% url 'share_post_view' post.id %}" method='POST'>
+                                        {% csrf_token %}
+                                        <input type="submit" value="Share Post">
+                                    </form>  
+                                    <li>
+                                        <button class='delete-post-btn'>Delete Post</button>
+                                    </li>
+                                    <li>
+                                        <button class='edit-post-btn' >Edit Post</button>
+                                    </li>
+                                    {% else %}
+                                    <form id='share-post-button' action="{% url 'share_post_view' post.id %}" method='POST'>
+                                        {% csrf_token %}
+                                        <input type="submit" value="Share Post">
+                                    </form> 
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-text">
+                        {{ post.text|safe }}
+                        {% if post.image %}
+                            <img src="{{post.image.url}}" alt="">
+                        {% endif %}
+                    </div>
+                    <div class="post-info">
+                        <div class="box">
+                            <span style='color: #b41d1d;' class="material-symbols-outlined">
+                                favorite
+                            </span>
+                            <span id='like-count'>
+                                {{post.likes.all.count}}
+                            </span>
+                        </div>
+                        <div class="box">
+                            <span style='
+                                color: #b41d1d;
+                                margin-right: 10px;
+                                font-weight: bold;
+                            '>
+                                {% with post.comments.all.count as comment_count %}
+                                    {% if comment_count == 0 %}
+                                        No comment
+                                    {% elif comment_count == 1 %}
+                                        1 comment
+                                    {% else %}
+                                            {{comment_count}}
+                                        comments
+                                    {% endif %}
+                                {% endwith %}
+                            </span>
+                            <span>
+                                <span class="material-symbols-outlined">
+                                    share
+                                </span>
+                                <span class='count'>
+                                    {{post.shares.all.count}}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="likes">
+                        <div class="like">                            
+                            <form action="{% url 'liking_post' post.id %}" id='like-form' method='POST'>
+                                {% csrf_token %}
+                                <span style='color: #2196F3;' class="material-symbols-outlined">
+                                    favorite
+                                </span>
+                                {% if request.user.id in post.users_liked %}
+                                    <input type="submit" value="Liked">
+                                    {% else %}
+                                    <input type="submit" value="Like">
+                                {% endif %}
+                            </form>
+                        </div>
+
+                        <div class="create-comment-drop-down none">
+                            <form action="{% url 'create_comment_view' post.id %}" method='post'>
+                                {% csrf_token %}
+                                <input type="text" required name="create_comment" id="" placeholder='Create Comment'>
+                                <div>
+                                    <a href="{% url 'home' %}">Cancel</a>
+                                    <input type="submit" value="New comment">
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="comment">
+                            <span class="material-symbols-outlined">
+                                chat_bubble
+                            </span>
+                            <button id='create-comment-btn'>comment</button>
+                        </div>
+                        <div class="share">
+                            <span class="material-symbols-outlined">
+                                share
+                            </span>
+                            <form id='share-post-button' action="{% url 'share_post_view' post.id %}" method='POST'>
+                                {% csrf_token %}
+                                <input type="submit" value="Share">
+                            </form>  
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class='no-posts'>
+                There's no posts here yet
+            </p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    const getCookie = (name) => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            };
+        };
+        return cookieValue;
+    };
+    
+    const csrftoken = getCookie('csrftoken');
+        
+    const likeForm = document.querySelectorAll("#like-form");
+    const shrePostForm = document.querySelectorAll("#share-post-button");
+
+
+    likeForm.forEach((elem) => {
+        elem.addEventListener("click", (e) =>  {
+            e.preventDefault();
+            elem = e.target.parentElement.action.replace('http://127.0.0.1:8000/liking/', '')[0]
+            const response = fetch(`liking/<${elem}>/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({ "messageText": 'messageText' }),
+            }).then((res) => res.json()).then(data => {
+                if (data.includes('deleted')) {
+                    e.target.value = "Like";
+                    count_like = data.replace(/\D+/, "")
+                    e.target.parentElement.parentElement.parentElement.parentElement.querySelector('.post-info #like-count').innerText = count_like
+                } else {
+                    e.target.value = "Liked";
+                    e.target.style.color = '#b41d1d'
+                    e.target.parentElement.parentElement.querySelector('.material-symbols-outlined').style.color = '#b41d1d'
+                    count_like = data.replace(/\D+/, "")
+                    e.target.parentElement.parentElement.parentElement.parentElement.querySelector('.post-info #like-count').innerText = count_like
+                }
+            })
+        });
+    })
+
+    shrePostForm.forEach((elem) => {
+        elem.addEventListener("click", (e) => {
+            e.preventDefault();
+            elem = e.target.parentElement.action.replace('http://127.0.0.1:8000/share-post/', '')[0]
+            const response = fetch(`share-post/${elem}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({ "messageText": 'messageText' }),
+            }).then((res) => res.json()).then(data => {
+                let share_count = data.replace(/\D+/, "")
+                let shareSpanElement = e.target.parentElement.parentElement.parentElement.parentElement.querySelector('.post-info .box:last-child span:last-child .count');
+                shareSpanElement.innerText = share_count;
+            })
+        })
+    })
+
+
+
+
+</script>

@@ -1,0 +1,236 @@
+{% extends "base/layout.html" %}
+
+{% block content %}
+{% load static %}
+{% include "navbar.html" %}
+<div class="profile-container">
+    <div class="container">
+        <div class="box">
+            <div class="image">
+                <img src="{{request.user.profile.avatar.url}}" alt="">
+            </div>
+            <div class="name">
+                {% if request.user.profile.name %}
+                {{request.user.profile.name}}
+                {% else %}
+                {{request.user.username}}
+                {% endif %}
+            </div>
+            <div class="description">
+                {{request.user.profile.bio}}
+            </div>
+            <ul class="navigator">
+                <li>
+                    <a>Followers</a>
+                </li>
+                <li>
+                    <a>
+                        Following
+                    </a>
+                </li>
+                <li>
+                    <a class="active">
+                        Posts
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        Shared Posts
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'settings' request.user.id %}">
+                        Edit Profile
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="box">
+
+            <div class="posts-list">
+                {% if posts %}
+                    {% for post in posts %}
+                    <div id="post-list">
+                        <div id="post-text">
+                            {{ post.text|safe }}
+                            {% if post.image %}
+                                <img src="{{post.image.url}}" alt="">
+                            {% endif %}
+                        </div>
+                        <div id="post_info">
+                            <div id='likes'>
+                                <span style='color: #b41d1d;' class="material-symbols-outlined">
+                                    favorite
+                                </span>
+                                <span>
+                                    {{post.likes.all.count}}
+                                </span>
+                            </div>
+
+                            <div id="comments">
+                                        <span style='
+                                        color: #b41d1d;
+                                        margin-right: 10px;
+                                        font-weight: bold;
+                                    '>
+                                        {% with post.comments.all.count as comment_count %}
+                                            {% if comment_count == 0 %}
+                                                No comment
+                                            {% elif comment_count == 1 %}
+                                                1 comment
+                                            {% else %}
+                                                {{comment_count}} comments
+                                            {% endif %}
+                                        {% endwith %}
+                                    </span>
+                                    <span>
+                                        {% with post.shares.all.count as share_count %}
+                                            {% if share_count == 0 %}
+                                                No share
+                                            {% elif share_count == 1 %}
+                                                1 share
+                                            {% else %}
+                                                {{share_count}} shares
+                                            {% endif %}
+                                        {% endwith %}
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                {% else %}
+                    <p class='no-posts'>
+                        There's no posts here yet
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="posts-list none" id='shared_posts'>
+                {% if shared_posts %}
+                    {% for shared_post in shared_posts %}
+                    <div id="post-list">
+                        <p style='text-align: center; font-weight: bold;'>
+                            The owner of this shared post is <span style='color: var(--main-color);'>
+                                {{shared_post.post.user}}
+                            </span>
+                        </p>
+                        <div id="post-text">
+                            {{ shared_post.post.text|safe }}
+                            {% if shared_post.post.image %}
+                                <img src="{{shared_post.post.image.url}}" alt="">
+                            {% endif %}
+                        </div>
+                        <div id="post_info">
+                            <div id='likes'>
+                                <span style='color: #b41d1d;' class="material-symbols-outlined">
+                                    favorite
+                                </span>
+                                <span>
+                                    {{shared_post.post.likes.all.count}}
+                                </span>
+                            </div>
+
+                            <div id="comments">
+                                        <span style='
+                                        color: #b41d1d;
+                                        margin-right: 10px;
+                                        font-weight: bold;
+                                    '>
+                                        {% with shared_post.post.comments.all.count as comment_count %}
+                                            {% if comment_count == 0 %}
+                                                No comment
+                                            {% elif comment_count == 1 %}
+                                                1 comment
+                                            {% else %}
+                                                {{comment_count}} comments
+                                            {% endif %}
+                                        {% endwith %}
+                                    </span>
+                                    <span>
+                                        {% with shared_post.post.shares.all.count as share_count %}
+                                            {% if share_count == 0 %}
+                                                No share
+                                            {% elif share_count == 1 %}
+                                                1 share
+                                            {% else %}
+                                                {{share_count}} shares
+                                            {% endif %}
+                                        {% endwith %}
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                {% else %}
+                    <p class='no-posts'>
+                        There are no shared posts here yet
+                    </p>
+                {% endif %}
+            </div>
+
+            <div id="followers" class='followers none'>
+                {% if followers %}
+                {% for follower in followers %}
+                    <div class="col">
+                        <div class="image">
+                            <img src="{{follower.follower.profile.avatar.url}}" alt="">
+                        </div>
+                        <div class="text">
+                            <div class="name">
+                                {{follower.follower.profile.name}}
+                            </div>
+                            <div class="username">{{follower.follower.username}}</div>
+                        </div>
+        
+                        <div class="follow">
+                            
+                            <form action="" method='post'>
+                                {% csrf_token %}
+                                <input type="submit" id="nofollow" value="Remove Follower">
+                            </form>
+                            
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                No one is following you
+                {% endif %}
+            </div>
+
+            <div class="following none" id="following">
+                {% if following %}
+                {% for following_user in following %}
+                <div class="col">
+                    <div class="image">
+                        <img src="{{following_user.following.profile.avatar.url}}" alt="">
+                    </div>
+                    <div class="text">
+                        <div class="name">
+                            {{following_user.following.profile.name}}
+                        </div>
+                        <div class="username">{{following_user.following.username}}</div>
+                    </div>
+    
+                    <div class="follow">
+                        
+                        <form action="{% url 'unfollow_user' following_user.following.id %}" method='post'>
+                            {% csrf_token %}
+                            <input type="submit" id="nofollow" value="Unfollow">
+                        </form>
+                        
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class='no-posts'>
+                you are not following anyone yet
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

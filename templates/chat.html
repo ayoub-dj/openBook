@@ -1,0 +1,38 @@
+{% extends "base/layout.html" %}
+
+{% block content %}
+{% load static %}
+{% include "navbar.html" %}
+<section class='groups-section'>
+    <div class="container">
+        <div class="users">
+            {% for user in users %}
+            <div class="col">
+                <div class="image">
+                    <img src="{{user.profile.avatar.url}}" alt="">
+                </div>
+                <div class="text">
+                    <div class="name">
+                        {% if user.profile.name %}
+                        {{user.profile.name}}
+                        {% else %}
+                        {{user.username}}
+                        {% endif %}
+                    </div>
+                    <div class="username">{{user.username}}</div>
+                </div>
+
+                <div class="follow">
+                    <a href="{% url 'send_message_view' user.id %}">Send a message</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<script>
+    document.querySelector('nav .container .middle a.activate').classList.remove('activate');
+    document.querySelector('nav .container .middle a.message-user').classList.add('activate')
+</script>
+{% endblock content %}

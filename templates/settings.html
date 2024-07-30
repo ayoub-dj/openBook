@@ -1,0 +1,26 @@
+{% extends "base/layout.html" %}
+
+{% block content %}
+{% load static %}
+{% include "navbar.html" %}
+<section class='change-settings'>
+    <h1>Change your informations</h1>
+    <div class="container">
+        <form action="{% url 'update_user' request.user.pk %}" id="user-form" method='post'>
+            {% csrf_token %}
+            {{user_form}}
+            <input type="submit" value="Update Your User">
+        </form>
+        <form action="{% url 'update_profile' request.user.pk %}" enctype="multipart/form-data" id="profile-form" method='post'>
+            {% csrf_token %}
+            {{profile_form}}
+            <input type="submit" value="Update Your Profile">
+        </form>
+    </div>
+</section>
+
+<script>
+    document.querySelector('nav .container .middle a.activate').classList.remove('activate');
+    document.querySelector('nav .container .right button').classList.add('activate')
+</script>
+{% endblock content %}

@@ -1,0 +1,36 @@
+j{% extends "base/layout.html" %}
+
+{% block content %}
+{% load static %}
+{% load socialaccount %}
+<div class="login">
+    <div class="container">
+        <div class="col">
+            <div class="logo">
+                <a href="/" class="logo">OpenBook</a>
+            </div>
+            <div class="text">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </div>
+            <a  class='allauth' id='github'>Sign in With <span>Github</span></a>
+            <a class='allauth' id='google'>Sign in With <span>Google</span></a>
+        </div>
+        <div class="col">
+            <form action='{% url "login" %}' method='POST'>
+                {% csrf_token %}
+                <input type="username" name='email' placeholder='Enter email or username' autocomplete="username">
+                <div class="field">
+                    <span class="material-symbols-outlined">
+                        visibility_off
+                    </span>
+                    <input type="password" placeholder='password' name='password' autocomplete="password">
+                </div>
+                <input type="submit" value="Sign in">
+            </form>
+            <a class='forgotten-password' href="{% url 'password_recovery_email' %}">Forgotten password?</a>
+
+            <a class='create-account' href="{% url 'register' %}">Create Account</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

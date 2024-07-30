@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Post</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Style for the hidden file input */
+        .hidden-input {
+            display: none;
+        }
+        
+        /* Style for the icon */
+        .icon {
+            cursor: pointer;
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hidden input styled as an icon -->
+    <label for="imageInput" class="icon">
+        <i class="fas fa-images"></i> <!-- Use an icon from Font Awesome -->
+    </label>
+    <input type="file" id="imageInput" class="hidden-input" accept="image/*" onchange="handleFileSelect(event)">
+    
+    <!-- Form to hold selected image information -->
+    <form id="imageForm" style="display: none;">
+        <input type="hidden" id="selectedImage" name="selectedImage">
+    </form>
+
+    <script>
+        function handleFileSelect(event) {
+            const file = event.target.files[0]; // Get the selected file
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imageData = event.target.result; // Get the data URL of the image
+                    const selectedImageField = document.getElementById('selectedImage');
+                    selectedImageField.value = imageData;
+
+                    // Optionally, you can submit the form programmatically here
+                    // document.getElementById('imageForm').submit();
+                };
+                reader.readAsDataURL(file); // Read the image file as a data URL
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+<div class="dropdown">
+    <div class="title">
+        <p></p>
+        <h3>Create post</h3>
+        <span class='close'>
+            <span class="material-symbols-outlined">
+                close
+            </span>
+        </span>
+    </div>
+    <div class="profile">
+        <div class="image">
+            <img src="static\imgs\default_profile.png" alt="">
+        </div>
+        <div class="name">
+            Ayoub Belghoul
+        </div>
+    </div>
+
+    <form action="" class='create-post-form'>
+        {% csrf_token %}
+        <textarea name="text" id="" placeholder="what's on your mind {{request.user}}"></textarea>
+        <div class="create-post-form-icons">
+            <div class="text">
+                add your post
+            </div>
+
+            <div class='icons'>
+                <div>
+                    <span id='location' class="material-symbols-outlined">
+                        location_on
+                    </span>
+                </div>
+                <div>
+                    <label for="imageInput" class="icon">
+                        <span style='cursor: pointer;' id='add_photo' class="material-symbols-outlined">add_photo_alternate</span>
+                    </label>
+                    <input type="file" id="imageInput" name='add_photo' class="hidden-input">
+                </div>
+                <div>
+                    <span id='sentiment_satisfied' class="material-symbols-outlined">
+                        sentiment_satisfied
+                    </span>
+                </div>
+                <div>
+                    <span id='groups' class="material-symbols-outlined">
+                        groups
+                    </span>
+                </div>
+            </div>
+        </div>
+        <input type="submit" value='Post'>
+    </form>
+</div>

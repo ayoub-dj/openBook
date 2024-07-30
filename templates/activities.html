@@ -1,0 +1,40 @@
+<div class="activities">
+    <div class="who-to-follow">
+        <h2>Who to follow</h2>
+
+        {% if users_to_follow_result %}        
+        {% for users_to_follow in users_to_follow_result %}            
+            <div class="profile-follow">
+                <div class="col">
+                    <div class="image">
+                        <img src="{{users_to_follow.profile.avatar.url}}" alt="">
+                    </div>
+                    <div class="text">
+                        <div class="name">
+                            {% if users_to_follow.profile.name %}
+                            {{users_to_follow.profile.name}}
+                            {% else %}
+                            {{users_to_follow.username}}
+                            {% endif %}
+                        </div>
+                        <div class="username">{{users_to_follow.username}}</div>
+                    </div>
+                </div>
+                <div class="follow">
+                    <form action="{% url 'follow_user' users_to_follow.id %}" method='POST'>
+                        {% csrf_token %}
+                        <input type="submit" value="Follow">
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+        {% else %}
+        <br>
+        <br>
+        <p style='color: red;'>You have already followed all the users 
+            <br>
+            There are no new users to follow
+        </p>
+        {% endif %}
+    </div>
+</div>

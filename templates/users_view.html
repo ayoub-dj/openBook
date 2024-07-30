@@ -1,0 +1,48 @@
+{% extends "base/layout.html" %}
+
+{% block content %}
+{% load static %}
+{% include "navbar.html" %}
+<section class='groups-section'>
+    <div class="container">
+        <div class="users">
+            {% for user in users %}
+            <div class="col">
+                <div class="image">
+                    <img src="{{user.profile.avatar.url}}" alt="">
+                </div>
+                <div class="text">
+                    <div class="name">
+                        {% if user.profile.name %}
+                        {{user.profile.name}}
+                        {% else %}
+                        {{user.username}}
+                        {% endif %}
+                    </div>
+                    <div class="username">{{user.username}}</div>
+                </div>
+
+                <div class="follow">
+                    {% if user.id in followed_users_ids %}
+                    <form action="{% url 'unfollow_user' user.id %}" method='POST'>
+                        {% csrf_token %}
+                        <input type="submit" id='nofollow' value="Unfollow">
+                    </form>
+                    {% else %}
+                        <form action="{% url 'follow_user' user.id %}" method='POST'>
+                            {% csrf_token %}
+                            <input type="submit" value="Follow">
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<script>
+    document.querySelector('nav .container .middle a.activate').classList.remove('activate');
+    document.querySelector('nav .container .middle a.group').classList.add('activate')
+</script>
+{% endblock content %}

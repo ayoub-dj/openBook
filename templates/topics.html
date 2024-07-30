@@ -1,0 +1,32 @@
+<div class="topics">
+    <div class="search-bar">
+        <form action="">
+            <input type="search" placeholder='search for a post' name="q" id="search">
+        </form>
+    </div>
+    <h2>BROWSE TOPICS</h2>
+    <ul class="all">
+        <li>
+            <a href="{% url 'home' %}">
+                <span>All</span>
+                <span>{{topics.count}}</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="topics-links">
+        {% if topics %}
+            {% for topic in topics %}            
+                <li>
+                    <a href="?q={{topic.name}}">
+                        <span>{{topic.name}}</span>
+                        <span>{{ topic.posts.count }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        {% else %}
+            <p class='no-posts'>
+                There's no posts here yet
+            </p>
+        {% endif %}
+    </ul>
+</div>
