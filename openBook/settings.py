@@ -126,32 +126,19 @@ WSGI_APPLICATION = 'openBook.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# PGHOST='ep-small-mud-a2oa6vgt.eu-central-1.aws.neon.tech'
-# PGDATABASE='neondb'
-# # PGUSER='neondb_owner'
-# PGPASSWORD='0x1fOdpWJsXo'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'neondb',
-        'USER': 'neondb_owner',
-        'PASSWORD': '0x1fOdpWJsXo',
-        'HOST': 'ep-small-mud-a2oa6vgt.eu-central-1.aws.neon.tech',
+        'NAME': '',
+        'USER': 'Your user',
+        'PASSWORD': 'Your Password',
+        'HOST': '',
         'PORT':  5432,
         'OPTIONS': {
             'sslmode': 'require',
         },
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 
 
