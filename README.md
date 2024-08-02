@@ -1,6 +1,4 @@
-# This project is not clean code and there are a lot of bugs. I just did it for practice.
+# This project is not clean, has a lot of bugs and the folders are poorly organized. I only did it for practice.
+
 Demo 
 https://youtu.be/wFKvinQyTss
-
-
-http://mx0.xyz/
